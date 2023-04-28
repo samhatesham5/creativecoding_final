@@ -5,16 +5,26 @@ class Person{
     constructor(x, y){
         //Attributes
         this.skinTone = skinTones[round(random(0, skinTones.length - 1))]; 
-        this.x = x;
-        this.y = y;
+        this.spr = new Sprite(x, y, 40); 
         this.health = 100; 
+        this.sprstrokeWeight = 4; 
+        this.spr.stroke = '#000000';
+        this.spr.color = this.skinTone;
+        this.spr.collider = 'static'; 
 
     }
 
     display(){
-        stroke('#000000'); 
-        strokeWeight(4);
-        fill(this.skinTone);
-        ellipse(this.x, this.y, 40);
+        this.spr.draw();
+        
+    }
+
+    //If a ball gets hit
+    hit(){
+        let storeColor = this.skinTone;
+        this.skinTone = '#e63946'; 
+        this.health -= 10; 
+        this.skinTone = storeColor; 
+
     }
 }
