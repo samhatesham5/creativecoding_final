@@ -29,13 +29,13 @@ function setup() {
   x = width / 2; 
   y = width /2; 
   //Will eventually populate using an array maybe? Create like 10 players?
-  players = new Person(200, 200);
+  players = new NPC(random(50, width - 50), random(50, height - 50));
   //Playable character
   mc = new Player(x, y);
   //Creating our crush
-  crush = new Crush(300, 200); 
-  friends = [new Friends(400, 100, "Lloyd"), new Friends(400, 200, "Denise"), new Friends(400, 300, "Merideth")];
-
+ //crush = new Crush(300, 200); 
+ // friends = [new Friends(400, 100, "Lloyd"), new Friends(400, 200, "Denise"), new Friends(400, 300, "Merideth")];
+  ballsThrown = mc.getInventory(); 
 }
 
 function draw() {
@@ -45,24 +45,24 @@ function draw() {
   }
   if(option == 1){
       mc.display();
-      players.display();
+   //  players.display();
       if(throwIt){
-        mc.attack(); 
-        throwIt = false
-        ballsThrown = mc.getInventory();
-        console.log(ballsThrown);
-      }
+        mc.attack();       
       //If we've thrown a ball, check if it's a hit
-      if((ballsThrown.length > 0)){
-        if(ballsThrown[invenIndex].ball.collides(players.spr)){
-          console.log("hit"); 
+      if((ballsThrown.length >= 0)){
+        let ballSpr = ballsThrown[invenIndex].ball;
+        if(ballSpr.collides(players.spr)){
+          console.log("Yup! Hit"); 
         }
-        hit = true; 
+        console.log("Nope");
+        //hit = true; 
+      
       }
-    //  if(invenIndex < ballsThrown.length)
-        //invenIndex++; 
-      
-      
+       if(invenIndex < ballsThrown.length)
+        invenIndex++; 
+      throwIt = false
+
+    }
      //Issue: Getting to see why its not detecting that we hit it
       //Issue: My key pressed isn't working
         
@@ -91,6 +91,7 @@ function keyPressed(){
 function mouseClicked(){
   throwIt = true; 
 }
+
 
 
 

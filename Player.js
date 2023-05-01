@@ -64,10 +64,10 @@ class Player extends Person{
         //Then store it back into our inventory for later reference
         this.pushInventory(); 
         curr.visible();
+        curr.ball.draw(); 
         let ang = curr.ball.angleTo(mouse);
         curr.ball.direction = ang;
         curr.ball.speed = 3;
-       // curr.ball.moveTowards(mouse, .001); 
         count--; 
       }      
     }
@@ -88,6 +88,11 @@ class Player extends Person{
       this.inventory = [];
       return this.inventory; 
 
+    }
+
+    getBall(){
+      let curr = this.inventory[0];
+      return curr.nba
     }
 
 }

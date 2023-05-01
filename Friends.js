@@ -3,13 +3,15 @@ Friends is a subclass of Person so it'll have a lot of the same functionality as
 person but will have slight differences!
 
 */ 
+
 class Friends extends Person{
     constructor(x, y, name){
         super(x,y);
         this.name = name; 
     }
 
-    display(){
+    displays(){
+        this.spr.draw();
         stroke('#00B4D8'); 
         strokeWeight(4);
         fill(this.skinTone);
