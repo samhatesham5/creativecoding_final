@@ -19,6 +19,7 @@ class Player extends Person{
         this.sprite.color = this.skinTone;
         this.sprite.collider = 'static';  //Objects will bound off of our player
         this.inventory = inventory; 
+        this.sprite.layer = 2;
       
       }
 
@@ -61,15 +62,16 @@ class Player extends Person{
         this.pushInventory();
         //Pop it out for reference
         let curr = this.inventory.pop(); 
-        //Then store it back into our inventory for later reference
-        this.pushInventory(); 
         curr.visible();
         curr.ball.draw(); 
         let ang = curr.ball.angleTo(mouse);
         curr.ball.direction = ang;
         curr.ball.speed = 3;
         count--; 
-      }      
+        return curr;      
+      } 
+      return -1; 
+      
     }
 
     pushInventory(){
@@ -95,49 +97,8 @@ class Player extends Person{
       return curr.nba
     }
 
+    
+
+
 }
 
-//When WASD is pressed, set our booleans to true
-function keyPressed(){
-    //WASD movements
-    if(key == 'w'){
-      goUp = true;
-    }
-    if(key == 's'){
-      goDown = true;
-  
-    }
-    if(key == 'a'){
-      goLeft = true;
-  
-    }
-    if(key == 'd'){
-      goRight = true;
-  
-    }
-   
-    //Q will be THROW
-  
-  
-  }
-  
-  //When WASD is released, set to false (this stops user from moving once they let go of keys)
-  function keyReleased(){
-    if(key == 'w'){
-      goUp = false; 
-    }
-    if(key == 's'){
-      goDown = false;
-  
-    }
-    if(key == 'a'){
-      goLeft = false;
-  
-    }
-    if(key == 'd'){
-      goRight = false;
-    }
-   
-  
-  
-  }

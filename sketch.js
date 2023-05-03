@@ -11,9 +11,7 @@ let y = 0;
 
 //Throwing, hitting
 let throwIt = false; 
-let hit = false;
-let invenIndex = 0; //Keeps track of how many balls we've shot out; we can only do 10 at a time
-let ballsThrown = []; 
+let hit = [];
 
 //Options
 let option = 1; 
@@ -29,13 +27,13 @@ function setup() {
   x = width / 2; 
   y = width /2; 
   //Will eventually populate using an array maybe? Create like 10 players?
-  players = new NPC(random(50, width - 50), random(50, height - 50));
+  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55))];
   //Playable character
   mc = new Player(x, y);
   //Creating our crush
  //crush = new Crush(300, 200); 
  // friends = [new Friends(400, 100, "Lloyd"), new Friends(400, 200, "Denise"), new Friends(400, 300, "Merideth")];
-  ballsThrown = mc.getInventory(); 
+  //ballsThrown = mc.getInventory(); 
 }
 
 function draw() {
@@ -45,32 +43,46 @@ function draw() {
   }
   if(option == 1){
       mc.display();
-   //  players.display();
       if(throwIt){
-        mc.attack();       
-      //If we've thrown a ball, check if it's a hit
-      if((ballsThrown.length >= 0)){
-        let ballSpr = ballsThrown[invenIndex].ball;
-        if(ballSpr.collides(players.spr)){
-          console.log("Yup! Hit"); 
+        //Checking the ball that we've thrown
+        let currBall = mc.attack();       
+       //If we've thrown a ball, check if it's a hit
+       if(currBall != -1){
+        //Check to see which players we hit
+        for(let i = players.length - 1; i >= 0; i--){
+          currBall.ball.collides(players[i].spr, () => hit.push(players[i])) 
         }
-        console.log("Nope");
-        //hit = true; 
+
+        //Reduce life points and check if that player has died
+       if(hit.length >= 0){
+          for(let n = hit.length - 1; n >= 0; n--){
+            hit[n].hit();   
+            hit[n].isDead();        
+          }
+        }
       
-      }
-       if(invenIndex < ballsThrown.length)
-        invenIndex++; 
+       }
+       else{
+        //Need to pick up balls
+       }
+       
+      
+       //Finished throwing
       throwIt = false
+      //Reset our array (since all the characters that got hit had reduced their health)
+      hit = [];
+
 
     }
-     //Issue: Getting to see why its not detecting that we hit it
-      //Issue: My key pressed isn't working
-        
 
   }
   
 
 }
+
+
+
+
 
 //Toggle between screen
 function keyPressed(){
@@ -92,6 +104,60 @@ function mouseClicked(){
   throwIt = true; 
 }
 
+//When WASD is pressed, set our booleans to true
+function keyPressed(){
+  //Press play
+  if(key == 'p'){
+    if(option >= 1){
+      option = 1; 
+    }
+    else{
+      option++; 
+  
+    }
+  }
+  //WASD movements
+  if(key == 'w'){
+    goUp = true;
+  }
+  if(key == 's'){
+    goDown = true;
+
+  }
+  if(key == 'a'){
+    goLeft = true;
+
+  }
+  if(key == 'd'){
+    goRight = true;
+
+  }
+ 
+  //Q will be THROW
+
+
+}
+
+//When WASD is released, set to false (this stops user from moving once they let go of keys)
+function keyReleased(){
+  if(key == 'w'){
+    goUp = false; 
+  }
+  if(key == 's'){
+    goDown = false;
+
+  }
+  if(key == 'a'){
+    goLeft = false;
+
+  }
+  if(key == 'd'){
+    goRight = false;
+  }
+ 
+
+
+}
 
 
 
