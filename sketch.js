@@ -3,7 +3,9 @@ Name: Sam Whitley
 Creative Coding Final
 */
 
-//Variables
+//Font
+let pixelFont;
+let arial;
 
 //Position and movement
 let x = 0; 
@@ -18,7 +20,7 @@ let throwIt = false;
 let hit = [];
 let killCount = 0; //Once killCount == the length of our players, we win!
 
-//Options
+//Options (Toggles between loading, main, and ending screen(s))
 let option = 0; 
 
 //Characters
@@ -30,6 +32,11 @@ let friends; //Our friend (stored in an array)
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  //Loading screen (Option 0)
+  pixelFont = loadFont('assets/04B.TTF');
+  pixelDensity(5);
+ arial = loadFont('assets/Arial.ttf');
+  //Main game (Option 1)
   x = width / 2; 
   y = height /2 + 50; 
   //Opponents
@@ -45,9 +52,22 @@ function setup() {
 
 function draw() {
   background(220);
+  //Loading screen
   if(option == 0){
     //DISPLAY SCREEN
+    mc.display();
+    textFont(pixelFont, 42);
+    textAlign(CENTER);
+    text("Dodgeball!",width /2, 100);
+    textSize(24);
+    text("Press p to play", width /2, 200);
+    //Control info
+    text("W", width / 2, height / 2 );
+    text("S", width / 2, height / 2 + 130);
+    text("A", width / 2 - 50, height / 2 + 60);
+    text("D", width / 2 + 50, height / 2 + 60);
   }
+  //Main game
   if(option == 1){
     //Display our main character
       mc.display();

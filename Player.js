@@ -1,10 +1,12 @@
+//Movement
 let goUp;
 let goDown;
 let goRight;
 let goLeft;
 //Attack function
 let count = 100; //Number of dodgeballs a user can throw at a time 
-let inventory = [];  //The user gets 10 balls
+let inventory = [];  
+
 
 //Player is the playable character!
 //This class uses a lot of function from Spirte and some basic concepts from it's parent class, Person
@@ -27,17 +29,29 @@ class Player extends Person{
         this.sprite.draw(); 
         noStroke();
         fill('#000000');   
+        textFont(arial, 16);
         textSize(14); 
-        text(this.name, this.sprite.position.x - 13, this.sprite.position.y + 40);
+        textAlign(CENTER);
+        text(this.name, this.sprite.position.x - 2, this.sprite.position.y + 40);
 
         //Controlling the movement of our player
         if(goUp){
+          //For loading screen, you can go all over the place
+          if(option == 0){
+            if(this.sprite.position.y > 0)
+              this.sprite.position.y = this.sprite.position.y - 3;
+
+          }
+          else{
+            //When you're actually in the game, you can't go past the net
             if(this.sprite.position.y > 420)
-            this.sprite.position.y = this.sprite.position.y - 3;
+              this.sprite.position.y = this.sprite.position.y - 3;
+          }
+            
           }
           if(goDown){
-            if(this.sprite.position.y  < height)
-            this.sprite.position.y = this.sprite.position.y + 3;
+            if(this.sprite.position.y < height)
+              this.sprite.position.y = this.sprite.position.y + 3;
           }
           if(goLeft){
             if(this.sprite.position.x > 0)
