@@ -11,6 +11,7 @@ class Dodgeball{
 
     visible(){
         this.ball.visible = true; 
+        this.ball.life = 200; 
     
     }
 

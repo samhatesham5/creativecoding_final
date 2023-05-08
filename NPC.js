@@ -10,6 +10,7 @@ class NPC extends Person{
         this.spr.color = this.skinTone;
         this.spr.collider = 'static'; 
         this.spr.layer = 1; 
+        this.spr.visible = false; 
         //this.spr.pos = createVector(x + 10, y + 10);
         this.spr.vel = createVector(random(.5), 0);
 
@@ -17,7 +18,7 @@ class NPC extends Person{
 
 
     display(){
-        this.spr.draw();
+        this.spr.visible = true; 
      }
 
     //Check if the person has died
@@ -39,7 +40,7 @@ class NPC extends Person{
     move(x, y){
         //Move x position 
          if(x > this.spr.position.x){
-            this.spr.position.x = round(this.spr.position.x)+ 1; 
+            this.spr.position.x = round(this.spr.position.x) + 1; 
         }
          else if(x < this.spr.position.x){
             this.spr.position.x = round(this.spr.position.x) - 1;

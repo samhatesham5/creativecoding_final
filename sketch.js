@@ -8,8 +8,10 @@ Creative Coding Final
 //Position and movement
 let x = 0; 
 let y = 0; 
-let newPos = [];  //Stores positions of each NPC
+let newPos = [];  //Stores positions of each NPC (opponents)
+let teamPos = []; //Stores positions of each NPC (team)
 let interval = 0; //Assits with loop through newPos array
+let teamInterval = 0; //Same as interval but for the teamPos array
 
 //Throwing, hitting, attacking
 let throwIt = false; 
@@ -17,7 +19,7 @@ let hit = [];
 let killCount = 0; //Once killCount == the length of our players, we win!
 
 //Options
-let option = 1; 
+let option = 0; 
 
 //Characters
 let players; //array of npcs
@@ -29,17 +31,15 @@ let friends; //Our friend (stored in an array)
 function setup() {
   createCanvas(windowWidth, windowHeight);
   x = width / 2; 
-  y = width /2; 
+  y = height /2 + 50; 
   //Opponents
-  
-  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55)), new NPC(random(55, width - 50), random(0, 55))];
+  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55))];
+  //Teammates (Includes NPCs, friends, and our crush)
+  team = [new NPC(random(55, width - 50), random(height/ 2, height - 10)), new NPC(random(55, width - 50), random(height /2, height - 10))];
   index = players.length - 1; 
   //Playable character
   mc = new Player(x, y);
-  //Creating our crush
- //crush = new Crush(300, 200); 
- // friends = [new Friends(400, 100, "Lloyd"), new Friends(400, 200, "Denise"), new Friends(400, 300, "Merideth")];
-  //ballsThrown = mc.getInventory(); 
+
 
 }
 
@@ -51,12 +51,20 @@ function draw() {
   if(option == 1){
     //Display our main character
       mc.display();
-      
+      //Plays all our players and teammates
+      displayNPC();
+      theLine(); 
       //Generating NPC movement at the start of program
       for(let i = players.length - 1; i >= 0; i-= 1){  
         //Each player should have their own unique position to move to
         if(newPos.length < players.length * 2)
-          getRandom();
+          getRandomOpp(); //Modify so that way we get random for X and Y
+      }
+      for(let i = team.length - 1; i >= 0; i-= 1){
+        //Keep adding values to our array so long as there's a teammate that needs an X,Y value
+        if(teamPos.length < team.length * 2){
+          getRandomTeam(); 
+        }
       }
 
         //For each value, we access their respective indexes for their positions
@@ -64,27 +72,41 @@ function draw() {
         for(let i = 0; i < players.length; i++){   
           if(players[i].move(newPos[i + interval], newPos[i + interval + 1]) == true){
             //replace with new random values (Replacing X)
-            newPos.splice(i + interval, 1, round(random(10, width - 10)));
+            newPos.splice(i + interval, 1, round(random(10, width - 10))); 
             //Replacing y
-            newPos.splice(i + interval + 1, 1, round(random(10, height /2)));
-
+            newPos.splice(i + interval + 1, 1, round(random(10, height /2))); //Make a get random for Y
           }
 
           interval += 1;
 
         }
+        //Repeat the same process for our other team
+        for(let i = 0; i < team.length; i++){   
+          if(team[i].move(teamPos[i + teamInterval], teamPos[i + teamInterval + 1]) == true){
+            //replace with new random values (Replacing X)
+            teamPos.splice(i + teamInterval, 1, round(random(10, width - 10))); 
+            //Replacing y
+            teamPos.splice(i + teamInterval + 1, 1, round(random(height / 2, height - 10))); //Make a get random for Y
+            
+          }
+
+          teamInterval += 1;
+
+        }
+
       
 
       //Resetting our interval
       if(interval >= newPos.length / 2){
         interval = 0;
       }
-
-
-      
-
+      if(teamInterval >= teamPos.length /2){
+        teamInterval = 0; 
+      }
+ 
+      //If we threw a ball
       if(throwIt){
-        //Checking the ball that we've thrown
+        //Tracking the ball that we've thrown
         let currBall = mc.attack();       
        //If we've thrown a ball, check if it's a hit
        if(currBall != -1){
@@ -107,28 +129,60 @@ function draw() {
         }
       
        }
-       else{
-        //Need to pick up balls
-       }
        
       
        //Finished throwing
       throwIt = false
       //Reset our array (since all the characters that got hit had reduced their health)
       hit = [];
-
-
     }
+    //If we won by killing all the opponents
+    if(killCount == players.length){
+      option = 2;
+    }
+
+  }
+  //If you kill are your opponents
+  if(option == 2){
+   
 
   }
   
 
 }
 
-//Returns an array of random values
-function getRandom(){
+//Displays teammates and players (we will always have the same size for both)
+function displayNPC(){
+  for(let i = 0; i < players.length; i++){   
+    players[i].display();
+    team[i].display(); 
+  }
+ 
+
+}
+
+//Displays the line seperating the two sides
+function theLine(){
+  stroke(0); 
+  strokeWeight(4);
+  line(0, 400, width, 400);
+  noStroke(); 
+}
+
+//Returns an array of random x, y values for our team
+function getRandomTeam(y){
+  let tempX = round(random(10, width - 10));
+  let tempY = round(random((height / 2) - 50, height - 10));
+  teamPos.push(tempX);
+  teamPos.push(tempY); 
+ 
+}
+
+//Returns an array of random x, y values for our opponent
+function getRandomOpp(){
   let tempX = round(random(10, width - 10));
   let tempY = round(random(10, height /2));
+
   newPos.push(tempX);
   newPos.push(tempY); 
 

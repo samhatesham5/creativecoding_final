@@ -3,7 +3,7 @@ let goDown;
 let goRight;
 let goLeft;
 //Attack function
-let count = 9; //Number of dodgeballs a user can throw at a time 
+let count = 100; //Number of dodgeballs a user can throw at a time 
 let inventory = [];  //The user gets 10 balls
 
 //Player is the playable character!
@@ -32,11 +32,11 @@ class Player extends Person{
 
         //Controlling the movement of our player
         if(goUp){
-            if(this.sprite.position.y > 0)
+            if(this.sprite.position.y > 420)
             this.sprite.position.y = this.sprite.position.y - 3;
           }
           if(goDown){
-            if(this.sprite.position.y  < width)
+            if(this.sprite.position.y  < height)
             this.sprite.position.y = this.sprite.position.y + 3;
           }
           if(goLeft){
