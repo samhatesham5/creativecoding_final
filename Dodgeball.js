@@ -14,8 +14,4 @@ class Dodgeball{
         this.ball.life = 200; 
     
     }
-
-    getBall(){
-        return this.ball; 
-    }
 }
