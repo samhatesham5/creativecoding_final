@@ -16,11 +16,6 @@ class NPC extends Person{
 
     }
 
-
-    display(){
-        this.spr.visible = true; 
-     }
-
     //Check if the person has died
     dies(){
         this.spr.life = 0;

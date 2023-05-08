@@ -17,5 +17,41 @@ class Person{
         this.health -= 10; 
     }
 
+    //Make the spr visible
+    display(){
+        this.spr.visible = true; 
+     }
+
+
+    //Moves our sprite to a random position
+    move(x, y){
+        //Move x position 
+         if(x > this.spr.position.x){
+            this.spr.position.x = round(this.spr.position.x) + 1; 
+        }
+         else if(x < this.spr.position.x){
+            this.spr.position.x = round(this.spr.position.x) - 1;
+        }
+        
+        
+        //Move y position
+        if(y > this.spr.position.y){
+            this.spr.position.y = round(this.spr.position.y) + 1;
+        }
+        else if(y < this.spr.position.y){
+            this.spr.position.y = round(this.spr.position.y) - 1; 
+        }
+        //Check if we've moved
+        if(this.spr.position.x == x && this.spr.position.y == y){
+            return true;
+        }
+        else{
+            return false
+        }
+
+        
+    
+    }
+
    
 }

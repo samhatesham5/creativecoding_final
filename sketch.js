@@ -7,6 +7,9 @@ Creative Coding Final
 let pixelFont;
 let arial;
 
+//Image
+let court;
+
 //Position and movement
 let x = 0; 
 let y = 0; 
@@ -35,14 +38,15 @@ function setup() {
   //Loading screen (Option 0)
   pixelFont = loadFont('assets/04B.TTF');
   pixelDensity(5);
- arial = loadFont('assets/Arial.ttf');
+  arial = loadFont('assets/Arial.ttf');
+  court = loadImage('assets/court.jpeg');
   //Main game (Option 1)
   x = width / 2; 
   y = height /2 + 50; 
   //Opponents
-  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55))];
+  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55)), new NPC(random(55, width - 50), random(0, 55))];
   //Teammates (Includes NPCs, friends, and our crush)
-  team = [new NPC(random(55, width - 50), random(height/ 2, height - 10)), new NPC(random(55, width - 50), random(height /2, height - 10))];
+  team = [new NPC(random(55, width - 50), random(height/ 2, height - 10)), new NPC(random(55, width - 50), random(height /2, height - 10)), new Friends(random(55, width - 50), random(height /2, height - 10), "Barry")];
   index = players.length - 1; 
   //Playable character
   mc = new Player(x, y);
@@ -51,16 +55,30 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(0);
   //Loading screen
   if(option == 0){
     //DISPLAY SCREEN
     mc.display();
     textFont(pixelFont, 42);
     textAlign(CENTER);
+    fill('#FFFFFF');
     text("Dodgeball!",width /2, 100);
     textSize(24);
-    text("Press p to play", width /2, 200);
+    fill('#b8c0ff');
+    text("Press p to play", width /2, 180);
+    fill('#FFFFFF');
+    text("Protect your ", width/2 - 60, 240);
+    fill('#00b4d8');
+    text("friends", width/2 + 130, 240);
+    fill('#FFFFFF');
+    text("Protect your ", width/2 - 60, 270);
+    fill('#fb6f92');
+    text("crush", width/2 + 130, 270);
+    fill('#FFFFFF');
+    textSize(16);
+    text("Click to shoot at the other team!", width/2 + 15, 670);
+
     //Control info
     text("W", width / 2, height / 2 );
     text("S", width / 2, height / 2 + 130);
@@ -69,6 +87,7 @@ function draw() {
   }
   //Main game
   if(option == 1){
+    image(court, 0, 0, width, height);
     //Display our main character
       mc.display();
       //Plays all our players and teammates

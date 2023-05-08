@@ -37,14 +37,15 @@ class Player extends Person{
         //Controlling the movement of our player
         if(goUp){
           //For loading screen, you can go all over the place
-          if(option == 0){
-            if(this.sprite.position.y > 0)
+          if(option == 1){
+            //When you're actually in the game, you can't go past the net
+            if(this.sprite.position.y > 420)
               this.sprite.position.y = this.sprite.position.y - 3;
+          
 
           }
           else{
-            //When you're actually in the game, you can't go past the net
-            if(this.sprite.position.y > 420)
+            if(this.sprite.position.y > 0)
               this.sprite.position.y = this.sprite.position.y - 3;
           }
             
@@ -64,10 +65,6 @@ class Player extends Person{
           }
     }
 
-    //Picking up balls in the area
-    pickUp(){
-
-    }
 
     //User, when Q is pressed, will throw a ball
     attack(){
@@ -106,10 +103,6 @@ class Player extends Person{
 
     }
 
-    getBall(){
-      let curr = this.inventory[0];
-      return curr.nba
-    }
 
     
 

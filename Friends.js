@@ -7,18 +7,21 @@ person but will have slight differences!
 class Friends extends Person{
     constructor(x, y, name){
         super(x,y);
+        this.spr = new Sprite();
+        this.spr.x = x;
+        this.spr.y = y;
+        this.spr.d = 40;
+        this.spr.visible = false;
         this.name = name; 
+        this.spr.stroke = '#00b4d8';
+        this.spr.color = this.skinTone;
     }
 
-    displays(){
-        this.spr.draw();
-        stroke('#00B4D8'); 
-        strokeWeight(4);
-        fill(this.skinTone);
-        ellipse(this.x, this.y, 40);
-        noStroke();
-        fill('#000000');   
+    display(){
+        this.spr.visible = true;
+        noStroke(); 
         textSize(14); 
-        text(this.name, this.x - 16, this.y + 40);
+        textFont(arial, 16);
+        text(this.name, this.spr.x - 2, this.spr.y + 40);
     }
 }
