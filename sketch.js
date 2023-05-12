@@ -20,13 +20,23 @@ let teamInterval = 0; //Same as interval but for the teamPos array
 
 //Throwing, hitting, attacking
 let throwIt = false; 
-let hit = [];
+let hit = []; //Keeps track of the opponents the player hits
+let hitUs = []; //Keeps track of teammates the opponnents hit 
 let killCount = 0; //Once killCount == the length of our players, we win!
 let teamCount = 0; //If teamCount == the length of our players, we lose. 
+let friendCount = 0; //Keeps track of how many friends got out
 
 //Options (Toggles between loading, main, and ending screen(s))
-let option = 1; 
-
+let option = 0; 
+let ending = 0;
+//Different options and endings
+/*
+0 - Loading screen
+1-  Main game
+2 = Good ending (saved friend, crush, you lived, and all the opp's died
+3 = Bad friend ending (saved crush, not all friends)
+4 = No crush (saved friends not crush)
+*/
 //Characters
 let players; //array of npcs
 let mc; //The player
@@ -47,7 +57,9 @@ function setup() {
   //Opponents
   players = [new NPC(random(50, width - 50), random(0, 50), true),new NPC(random(55, width - 50), random(0, 55), true), new NPC(random(55, width - 50), random(0, 55), true)];
   //Teammates (Includes NPCs, friends, and our crush)
-  team = [new NPC(random(55, width - 50), random(360, height - 10), false), new NPC(random(55, width - 50), random(360, height - 10), false), new Friends(random(55, width - 50), random(360, height - 10), "Barry")];
+  crush = new Crush(random(55, width - 50), random(360, height - 10)); 
+  barry = new Friends(random(55, width - 50), random(360, height - 10), "Barry");
+  team = [new NPC(random(55, width - 50), random(360, height - 10), false), crush, barry];
   index = players.length - 1; 
   //Playable character
   mc = new Player(x, y);
@@ -70,12 +82,12 @@ function draw() {
     text("Press p to play", width /2, 180);
     fill('#FFFFFF');
     text("Protect your ", width/2 - 60, 240);
-    fill('#00b4d8');
+    fill('#ade8f4');
     text("friends", width/2 + 130, 240);
     fill('#FFFFFF');
     text("Protect your ", width/2 - 60, 270);
     fill('#fb6f92');
-    text("crush", width/2 + 130, 270);
+    text("crush, Alex", width/2 + 170, 270);
     fill('#FFFFFF');
     textSize(16);
     text("Click to shoot at the other team!", width/2 + 15, 670);
@@ -142,17 +154,13 @@ function draw() {
             //replace with new random values (Replacing X)
             teamPos.splice(i + teamInterval, 1, round(random(50, windowWidth - 50))); 
             //Replacing y
-            teamPos.splice(i + teamInterval + 1, 1, round(random(360, height - 10))); //Make a get random for Y
+            teamPos.splice(i + teamInterval + 1, 1, round(random(380, height - 10))); //Make a get random for Y
             
           }
 
           teamInterval += 1;
 
         }
-        //TO DO: Loop through players, have each player attack
-        //Second for loop points to members on the team + mc
-
-      
 
       //Resetting our interval
       if(interval >= newPos.length / 2){
@@ -161,11 +169,73 @@ function draw() {
       if(teamInterval >= teamPos.length /2){
         teamInterval = 0; 
       }
+      //Every 100 framecounts, the opponents will shoot a ball at player's team
+      if(frameCount % 50 == 0){
+        //Pick a random number 
+        let pickTarget = round(random(0, 2));
+        //Pick ONE player to throw
+        let pickThrower = round(random(0, players.length - 1));
+        //Pick ONE team mate to target 
+        let targetTeam = round(random(0, team.length - 1))
+        //If pickTarget less than 0, attack teammates
+        if(pickTarget <= 0){
+            let playerBall = players[pickThrower].attack(team[targetTeam].spr.position);   
+            //Check if opp hit a teammate
+            playerBall.ball.collides(team[targetTeam].spr, () => hitUs.push(team[targetTeam]));
+            //Still check if the opp hit us or our crush (because that should still count)
+            playerBall.ball.collides(mc.sprite, () => hitUs.push(mc));
+            playerBall.ball.collides(crush.spr, () => hitUs.push(crush));
+        }
+        
+        //If pickTarget greater than 0, attack our crush directly
+        else{
+             let playerBall = players[pickThrower].attack(crush.spr.position);
+              //Check if our crush gets hit 
+              playerBall.ball.collides(crush.spr, () => hitUs.push(crush));
+              //Still check if the opp hit a teammate or us (should still count)
+              playerBall.ball.collides(team[targetTeam].spr, () => hitUs.push(team[targetTeam]));
+              playerBall.ball.collides(mc.sprite, () => hitUs.push(mc));
+             
+          }   
+      }  
+        //TODO: IF OPPONENT HITS A TEAM MEMBER
+        //IF AN OPPONENT HITS US
+        //IF AN OPPONENT HITS OUR CRUSH
+        if(hitUs.length >= 0){
+          console.log(hitUs); 
+          for(let i = hitUs.length - 1; i >= 0; i--){
+            hitUs[i].hit();
+             //If the player that just died is us, GAME OVER
+            if(hitUs[i].isDead() && hitUs[i] == mc){
+              option = 3; 
+              break;
+            }
+            //Check if our friend died
+            if(hitUs[i].isDead() && hitUs[i].name != 'null'){
+              teamCount += 1;
+              friendCount += 1; 
+              //If all of our friends are out/dead, get the bad friend ending 
+              if(friendCount >= 2)
+                ending = 2; 
+            }
+             //Check if our crush died
+             if(hitUs[i].isDead() && hitUs[i] == crush){
+              teamCount += 1;
+              //Get the bad crush ending 
+              ending = 4; 
+            }
+            //Check if any NPC teammates that died
+            if(hitUs[i].isDead()){
+              //Removes teammate from our array
+              teamCount += 1; 
+                
+            }
+           
+          }
+        }
+        //Reset the characters players hit
+        hitUs = []; 
       
-      //Players attack
-      for(let i = 0; i < players.length; i++){
-
-      }
  
       //If we threw a ball
       if(throwIt){
@@ -185,14 +255,11 @@ function draw() {
             if(hit[n].isDead()){
               //Remove player from our array
               killCount +=1; 
-              console.log(killCount);
             }    
           }
           
         }
-      
        }
-       
       
        //Finished throwing
       throwIt = false
@@ -204,10 +271,16 @@ function draw() {
       option = 2;
     }
 
+    //TODO: DIFFERENT ENDING SCREENS
+    //TODO: Being able to stand in front of our crush or NPC and block balls for them
   }
   //If you kill are your opponents
   if(option == 2){
    
+
+  }
+  //GAME OVER FOR MC
+  if(option == 3){
 
   }
   
@@ -235,7 +308,7 @@ function theLine(){
 //Returns an array of random x, y values for our team
 function getRandomTeam(y){
   let tempX = round(random(10, width - 10));
-  let tempY = round(random(360, height - 10));
+  let tempY = round(random(380, height - 10));
   teamPos.push(tempX);
   teamPos.push(tempY); 
  

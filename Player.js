@@ -15,10 +15,10 @@ class Player extends Person{
         super(x, y);
         this.sprite = new Sprite(x, y, 40); 
         this.name = "You"; 
-        this.health = 200;
+        this.health = 40;
         this.sprite.strokeWeight = 4; 
-        this.sprite.stroke = '#ffba08';
-        this.sprite.color = this.skinTone;
+        this.sprite.color = '#ffba08';
+       // this.sprite.color = this.skinTone;
         this.sprite.collider = 'static';  //Objects will bound off of our player
         this.inventory = inventory; 
         this.sprite.layer = 2;
@@ -77,7 +77,7 @@ class Player extends Person{
         curr.ball.draw(); 
         let ang = curr.ball.angleTo(mouse);
         curr.ball.direction = ang;
-        curr.ball.speed = 5;
+        curr.ball.speed = 3;
         count--; 
         return curr;      
       } 
@@ -101,6 +101,15 @@ class Player extends Person{
       this.inventory = [];
       return this.inventory; 
 
+    }
+
+    //Check if the person has died
+    isDead(){
+      if(this.health == 0){
+          this.sprite.life = 0;
+          return true; 
+      }
+      return false;
     }
 
 

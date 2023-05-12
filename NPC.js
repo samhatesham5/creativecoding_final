@@ -5,35 +5,23 @@ class NPC extends Person{
         this.spr.x = x + 10;
         this.spr.y = y + 10;
         this.spr.d = 40;
-        this.spr.color = this.skinTone;
         this.spr.collider = 'static'; 
         this.spr.layer = 2; 
         this.spr.visible = false; 
-        //this.spr.pos = createVector(x + 10, y + 10);
         this.spr.vel = createVector(random(.5), 0);
         this.spr.strokeWeight = 4; 
         if(opp){
-            this.spr.stroke = '#000000';
+            this.spr.color = '#000000';
         }
         else if(!opp)
-            this.spr.stroke = '#00b4d8';
-
+            this.spr.color = '#00b4d8';
     }
 
     //Check if the person has died
     dies(){
         this.spr.life = 0;
-
     }
 
-     //Check if the person has died
-     isDead(){
-        if(this.health == 0){
-            this.spr.life = 0;
-            return true; 
-        }
-        return false;
-    }
 
     //Moves our sprite to a random position
     move(x, y){

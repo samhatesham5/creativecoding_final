@@ -14,8 +14,9 @@ class Friends extends Person{
         this.spr.visible = false;
         this.name = name; 
         this.spr.stroke = '#00b4d8';
-        this.spr.color = this.skinTone;
+        this.spr.color =  '#ade8f4';
         this.spr.strokeWeight = 4; 
+        this.spr.collider = 'static';
     }
 
     display(){
