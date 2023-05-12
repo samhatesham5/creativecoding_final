@@ -219,7 +219,7 @@ function draw() {
 
               }
             }
-            
+           
           }        
              
         }   
@@ -235,31 +235,30 @@ function draw() {
               break;
             }
             //Check if our friend died
-            if(hitUs[i].isDead() && hitUs[i] instanceof Friends){
-              teamCount += 1;
+            else if(hitUs[i].isDead() && hitUs[i] instanceof Friends){
               friendCount += 1; 
+              teamCount += 1;
               //Remove teammate from the array
               //If all of our friends are out/dead, get the bad friend ending 
               //Only reassign if there's no ending yet
               if(friendCount >= 1 && ending <= 0)
                 ending = 3; 
+                teamCount += 1;
             }
-             //Check if our crush died
-             if(hitUs[i].isDead() && hitUs[i] instanceof Crush){
+            //Check if our crush died
+            else if(hitUs[i].isDead() && hitUs[i] instanceof Crush){
               teamCount += 1;
               //Get the bad crush ending (but good friend) 
               //If there's no ending yet, assign it
               if(ending <= 0)
                 ending = 4; 
-        
             }
-            //Check if any NPC teammates that died
-            if(hitUs[i].isDead()){
-              //Removes teammate from our array
-              teamCount += 1; 
+            else if(hitUs[i].isDead()){
+              teamCount += 1;
             }
            
           }
+          
         }
         //Reset the characters players hit
         hitUs = []; 
@@ -300,8 +299,9 @@ function draw() {
       //If all our teammates live
       if(teamCount == 0)
         option = 2;
+      //If we didn't save all our teammates
       else
-        count = 3; 
+        option = 3; 
     }
 
     //If everyone died
@@ -318,13 +318,21 @@ function draw() {
     //TODO: Being able to stand in front of our crush or NPC and block balls for them
     //TODO: Get our team to fire back at the other team (but probably less intervals?)
   }
-  //If you kill are your opponents
+  //If you kill all the opponents
   if(option == 2){
-   
-
+    background(0);
   }
-  //GAME OVER FOR MC
+  //Teammates have died 
+  if(option == 3){
+    background(0);
+  }
+  //Your crush didn't make it (but other members did)
+  if (option == 4){
+    background(0);
+  }
+  //GAME OVER FOR MC 
   if(option == 5){
+    background(0);
 
   }
   
