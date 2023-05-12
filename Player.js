@@ -77,7 +77,7 @@ class Player extends Person{
         curr.ball.draw(); 
         let ang = curr.ball.angleTo(mouse);
         curr.ball.direction = ang;
-        curr.ball.speed = 3;
+        curr.ball.speed = 5;
         count--; 
         return curr;      
       } 

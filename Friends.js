@@ -15,6 +15,7 @@ class Friends extends Person{
         this.name = name; 
         this.spr.stroke = '#00b4d8';
         this.spr.color = this.skinTone;
+        this.spr.strokeWeight = 4; 
     }
 
     display(){

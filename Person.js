@@ -1,13 +1,12 @@
 let skinTones= ["#EDC4B3", "#DEAB90", "#774936", "#B07D62", "#FFE5D9", "#FFD7BA"]; 
-//let skinTones= [ color(237, 196, 179), color(222, 171, 144), color(119, 73, 54), color(176, 125, 98), color(255, 229, 217), color(255, 215, 186)]; 
-
+let inven = [];  
 
 class Person{
 
     constructor(x, y){
         //Attributes
         this.skinTone = skinTones[round(random(0, skinTones.length - 1))]; 
-        this.health = 50; 
+        this.health = 30; 
 
     } 
 
@@ -20,7 +19,19 @@ class Person{
     //Make the spr visible
     display(){
         this.spr.visible = true; 
-     }
+    }
+    
+    //Make characters attack
+    //Will throw a new ball at the 
+    attack(player){
+       let currBall = new Dodgeball(this.spr.position.x, this.spr.position.y); 
+       currBall.visible(); 
+       currBall.ball.draw(); 
+       let ang = currBall.ball.angleTo(player);
+       curr.ball.direction = ang;
+       curr.ball.speed = 3;
+    }
+
 
 
     //Moves our sprite to a random position

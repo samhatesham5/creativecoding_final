@@ -22,9 +22,10 @@ let teamInterval = 0; //Same as interval but for the teamPos array
 let throwIt = false; 
 let hit = [];
 let killCount = 0; //Once killCount == the length of our players, we win!
+let teamCount = 0; //If teamCount == the length of our players, we lose. 
 
 //Options (Toggles between loading, main, and ending screen(s))
-let option = 0; 
+let option = 1; 
 
 //Characters
 let players; //array of npcs
@@ -39,14 +40,14 @@ function setup() {
   pixelFont = loadFont('assets/04B.TTF');
   pixelDensity(5);
   arial = loadFont('assets/Arial.ttf');
-  court = loadImage('assets/court.jpeg');
+  court = loadImage('assets/court2.jpg');
   //Main game (Option 1)
   x = width / 2; 
   y = height /2 + 50; 
   //Opponents
-  players = [new NPC(random(50, width - 50), random(0, 50)),new NPC(random(55, width - 50), random(0, 55)), new NPC(random(55, width - 50), random(0, 55))];
+  players = [new NPC(random(50, width - 50), random(0, 50), true),new NPC(random(55, width - 50), random(0, 55), true), new NPC(random(55, width - 50), random(0, 55), true)];
   //Teammates (Includes NPCs, friends, and our crush)
-  team = [new NPC(random(55, width - 50), random(height/ 2, height - 10)), new NPC(random(55, width - 50), random(height /2, height - 10)), new Friends(random(55, width - 50), random(height /2, height - 10), "Barry")];
+  team = [new NPC(random(55, width - 50), random(360, height - 10), false), new NPC(random(55, width - 50), random(360, height - 10), false), new Friends(random(55, width - 50), random(360, height - 10), "Barry")];
   index = players.length - 1; 
   //Playable character
   mc = new Player(x, y);
@@ -87,12 +88,28 @@ function draw() {
   }
   //Main game
   if(option == 1){
-    image(court, 0, 0, width, height);
+    image(court, 0, -50, width, height + 100);
     //Display our main character
       mc.display();
       //Plays all our players and teammates
       displayNPC();
-      theLine(); 
+      //Kill counts for each team
+      textFont(pixelFont, 18);
+      stroke('#FFFFFF');
+      strokeWeight(3); 
+      fill(0);
+      text("Black Team: ", 100, 50); //20
+      text(killCount, 190, 50);
+      text("/", 210, 50);
+      text(players.length, 230, 50);
+      //Blue
+      fill('#00b4d8');
+      text("Blue Team: ", 93, 80); //20
+      text(teamCount, 190, 80);
+      text("/", 210, 80);
+      text(team.length + 1, 230, 80); // Includes our character
+      noStroke(); 
+     // theLine(); 
       //Generating NPC movement at the start of program
       for(let i = players.length - 1; i >= 0; i-= 1){  
         //Each player should have their own unique position to move to
@@ -111,9 +128,9 @@ function draw() {
         for(let i = 0; i < players.length; i++){   
           if(players[i].move(newPos[i + interval], newPos[i + interval + 1]) == true){
             //replace with new random values (Replacing X)
-            newPos.splice(i + interval, 1, round(random(10, width - 10))); 
+            newPos.splice(i + interval, 1, round(random(50, windowWidth - 50))); 
             //Replacing y
-            newPos.splice(i + interval + 1, 1, round(random(10, height /2))); //Make a get random for Y
+            newPos.splice(i + interval + 1, 1, round(random(10, 340))); //Make a get random for Y
           }
 
           interval += 1;
@@ -123,15 +140,17 @@ function draw() {
         for(let i = 0; i < team.length; i++){   
           if(team[i].move(teamPos[i + teamInterval], teamPos[i + teamInterval + 1]) == true){
             //replace with new random values (Replacing X)
-            teamPos.splice(i + teamInterval, 1, round(random(10, width - 10))); 
+            teamPos.splice(i + teamInterval, 1, round(random(50, windowWidth - 50))); 
             //Replacing y
-            teamPos.splice(i + teamInterval + 1, 1, round(random(height / 2, height - 10))); //Make a get random for Y
+            teamPos.splice(i + teamInterval + 1, 1, round(random(360, height - 10))); //Make a get random for Y
             
           }
 
           teamInterval += 1;
 
         }
+        //TO DO: Loop through players, have each player attack
+        //Second for loop points to members on the team + mc
 
       
 
@@ -141,6 +160,11 @@ function draw() {
       }
       if(teamInterval >= teamPos.length /2){
         teamInterval = 0; 
+      }
+      
+      //Players attack
+      for(let i = 0; i < players.length; i++){
+
       }
  
       //If we threw a ball
@@ -204,14 +228,14 @@ function displayNPC(){
 function theLine(){
   stroke(0); 
   strokeWeight(4);
-  line(0, 400, width, 400);
+  line(0, 390, width, 390);
   noStroke(); 
 }
 
 //Returns an array of random x, y values for our team
 function getRandomTeam(y){
   let tempX = round(random(10, width - 10));
-  let tempY = round(random((height / 2) - 50, height - 10));
+  let tempY = round(random(360, height - 10));
   teamPos.push(tempX);
   teamPos.push(tempY); 
  
@@ -220,7 +244,7 @@ function getRandomTeam(y){
 //Returns an array of random x, y values for our opponent
 function getRandomOpp(){
   let tempX = round(random(10, width - 10));
-  let tempY = round(random(10, height /2));
+  let tempY = round(random(10, 370));
 
   newPos.push(tempX);
   newPos.push(tempY); 

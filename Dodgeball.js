@@ -5,7 +5,7 @@ class Dodgeball{
         this.ball = new Sprite(x, y, 10); 
         this.ball.r = 10; 
         this.ball.visible = false; 
-        this.ball.color = '#bc6c25';
+        this.ball.color = '#f34213';
      
     }
 

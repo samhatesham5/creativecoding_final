@@ -1,18 +1,22 @@
 class NPC extends Person{
-    constructor(x, y){
+    constructor(x, y, opp){
         super(x,y);
         this.spr = new Sprite();
         this.spr.x = x + 10;
         this.spr.y = y + 10;
         this.spr.d = 40;
-        this.spr.strokeWeight = 4; 
-        this.spr.stroke = '#000000';
         this.spr.color = this.skinTone;
         this.spr.collider = 'static'; 
-        this.spr.layer = 1; 
+        this.spr.layer = 2; 
         this.spr.visible = false; 
         //this.spr.pos = createVector(x + 10, y + 10);
         this.spr.vel = createVector(random(.5), 0);
+        this.spr.strokeWeight = 4; 
+        if(opp){
+            this.spr.stroke = '#000000';
+        }
+        else if(!opp)
+            this.spr.stroke = '#00b4d8';
 
     }
 
