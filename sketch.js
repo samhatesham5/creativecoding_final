@@ -198,9 +198,7 @@ function draw() {
              
           }   
       }  
-        //TODO: IF OPPONENT HITS A TEAM MEMBER
-        //IF AN OPPONENT HITS US
-        //IF AN OPPONENT HITS OUR CRUSH
+        //Checking what the opponents hit
         if(hitUs.length >= 0){
           console.log(hitUs); 
           for(let i = hitUs.length - 1; i >= 0; i--){
@@ -273,6 +271,7 @@ function draw() {
 
     //TODO: DIFFERENT ENDING SCREENS
     //TODO: Being able to stand in front of our crush or NPC and block balls for them
+    //TODO: Get our team to fire back at the other team (but probably less intervals?)
   }
   //If you kill are your opponents
   if(option == 2){

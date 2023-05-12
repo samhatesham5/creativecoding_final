@@ -20,7 +20,7 @@ class Person{
     //Check if the person has died
     isDead(){
         if(this.health == 0){
-            this.spr.life = 0;
+            this.spr.life = 0
             return true; 
         }
         return false;

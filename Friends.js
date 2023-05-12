@@ -24,6 +24,7 @@ class Friends extends Person{
         noStroke(); 
         textSize(14); 
         textFont(arial, 16);
-        text(this.name, this.spr.x - 2, this.spr.y + 40);
+        if(this.health > 0)
+            text(this.name, this.spr.x - 2, this.spr.y + 40);
     }
 }
