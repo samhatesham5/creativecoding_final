@@ -18,8 +18,9 @@ class Player extends Person{
         this.health = 40;
         this.sprite.strokeWeight = 4; 
         this.sprite.color = '#ffba08';
+        this.sprite.stroke = '#ffba08';
        // this.sprite.color = this.skinTone;
-        this.sprite.collider = 'static';  //Objects will bound off of our player
+        this.sprite.collider = 'static';  
         this.inventory = inventory; 
         this.sprite.layer = 2;
       

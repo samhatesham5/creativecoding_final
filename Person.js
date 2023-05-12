@@ -40,7 +40,7 @@ class Person{
        currBall.ball.draw(); 
        let ang = currBall.ball.angleTo(player);
        currBall.ball.direction = ang;
-       currBall.ball.speed = 3;
+       currBall.ball.speed = 2;
        return currBall;
     }
 
