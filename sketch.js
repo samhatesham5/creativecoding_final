@@ -26,6 +26,7 @@ let killCount = 0; //Once killCount == the length of our players, we win!
 let teamCount = 0; //If teamCount == the length of our players, we lose. 
 let friendCount = 0; //Keeps track of how many friends got out
 let canCatch = false;
+let crushCount = true; //Detects if our crush isn't there
 
 //Options (Toggles between loading, main, and ending screen(s))
 let option = 0; 
@@ -93,6 +94,7 @@ function draw() {
     fill('#FFFFFF');
     textSize(16);
     text("Click to shoot at the other team!", width/2 + 15, 670);
+    text("Hold 'q' to catch balls from other team." , width/2 + 15, 690);
 
     //Control info
     text("W", width / 2, height / 2 );
@@ -246,6 +248,7 @@ function draw() {
             //Check if our crush died
             else if(hitUs[i].isDead() && hitUs[i] instanceof Crush){
               teamCount += 1;
+              crushCount = false;
               //Get the bad crush ending (but good friend) 
               //If there's no ending yet, assign it
               if(ending <= 0)
@@ -297,6 +300,9 @@ function draw() {
       //If all our teammates live
       if(teamCount == 0)
         option = 2;
+      //If our crush didn't make it
+      else if(!crushCount)
+        option = 4; 
       //If we didn't save all our teammates
       else
         option = 3; 
@@ -305,16 +311,13 @@ function draw() {
     //If everyone died
      if(teamCount == 3){
       //If your crush dies
-      if(ending == 4)
+      if(!crushCount)
         option = 4;
       //If all your friends die (and teammates)
       else
           option = 3;
       }
 
-    //TODO: DIFFERENT ENDING SCREENS
-    //TODO: Being able to stand in front of our crush or NPC and block balls for them
-    //TODO: Get our team to fire back at the other team (but probably less intervals?)
   }
   //If you kill all the opponents
   if(option == 2){
@@ -372,10 +375,13 @@ function draw() {
     fill('#00b4d8');
     stroke('#ade8f4');
     strokeWeight(3); 
-    text("Win some, lose some!",width /2, 320);
+    text("Win some, lose some!",width /2, 300);
     textSize(20);
     noStroke();
-    text("You saved your friends, but not your crush",width/2, 350);
+    fill('#fb6f92');
+    text("I guess Alex wasn't the one!",width/2, 340);
+    fill('#00b4d8');
+    text("You saved your friends but not your crush.",width/2, 360);
     fill('#FFFFFF');
     text("Press 'm' to go back to loading screen",width /2, 400);
   }
@@ -439,11 +445,6 @@ function getRandomOpp(){
 
 }
 
-
-
-
-
-
 //Allows us to attack
 function mouseClicked(){
   throwIt = true; 
@@ -454,13 +455,8 @@ function mouseClicked(){
 function keyPressed(){
   //Press play
   if(key == 'p'){
-    if(option >= 1){
-      option = 1; 
-    }
-    else{
-      option++; 
-  
-    }
+    option = 1; 
+    
   }
   //Go back to loading screen
   if(key == 'm'){
