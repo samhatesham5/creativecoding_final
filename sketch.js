@@ -28,7 +28,7 @@ let friendCount = 0; //Keeps track of how many friends got out
 let canCatch = false;
 
 //Options (Toggles between loading, main, and ending screen(s))
-let option = 0; 
+let option = 2; 
 let ending = 0;
 //Different options and endings
 /*
@@ -232,7 +232,6 @@ function draw() {
              console.log(players, mc.health); 
             if((hitUs[i] instanceof Player) && (mc.health == 0)){
               option = 5; 
-              break;
             }
             //Check if our friend died
             else if(hitUs[i].isDead() && hitUs[i] instanceof Friends){
@@ -321,18 +320,77 @@ function draw() {
   //If you kill all the opponents
   if(option == 2){
     background(0);
+    for(let i = 0; i <= team.length - 1; i++){
+      team[i].spr.visible = false;
+    }
+    for(let i = 0; i <= players.length - 1; i++){
+      players[i].spr.visible = false;
+    }
+    textFont(pixelFont, 42);
+    textAlign(CENTER);
+    fill('#FFFFFF');
+    text("You did it!",width /2, 300);
   }
-  //Teammates have died 
+  //MC Lives but teammates have died 
   if(option == 3){
     background(0);
+    for(let i = 0; i <= team.length - 1; i++){
+      team[i].spr.visible = false;
+    }
+    for(let i = 0; i <= players.length - 1; i++){
+      players[i].spr.visible = false;
+    }
+    textFont(pixelFont, 42);
+    textAlign(CENTER);
+    fill('#00b4d8');
+    stroke('#ade8f4');
+    strokeWeight(3); 
+    text("Win some, lose some!",width /2, 300);
+    textSize(20);
+    noStroke(); 
+    text("You made it, but wait...",width/2, 330);
+    text("where's your team?",width/2, 350);
+    fill('#FFFFFF');
+    text("Press 'm' to go back to loading screen",width /2, 400);
+
   }
-  //Your crush didn't make it (but other members did)
-  if (option == 4){
+  //MC Lives but our crush didn't make it (but other members did)
+  if(option == 4){
     background(0);
+    for(let i = 0; i <= team.length - 1; i++){
+      team[i].spr.visible = false;
+    }
+    for(let i = 0; i <= players.length - 1; i++){
+      players[i].spr.visible = false;
+    }
+    textFont(pixelFont, 42);
+    textAlign(CENTER);
+    fill('#00b4d8');
+    stroke('#ade8f4');
+    strokeWeight(3); 
+    text("Win some, lose some!",width /2, 320);
+    textSize(20);
+    noStroke();
+    text("You saved your friends, but not your crush",width/2, 350);
+    fill('#FFFFFF');
+    text("Press 'm' to go back to loading screen",width /2, 400);
   }
-  //GAME OVER FOR MC 
+  //GAME OVER IF MC 
   if(option == 5){
     background(0);
+    for(let i = 0; i <= team.length - 1; i++){
+      team[i].spr.visible = false;
+    }
+    for(let i = 0; i <= players.length - 1; i++){
+      players[i].spr.visible = false;
+    }
+    textFont(pixelFont, 42);
+    textAlign(CENTER);
+    fill('#c1121f');
+    text("Game Over!",width /2, 320);
+    textSize(20);
+    fill('#FFFFFF');
+    text("Press 'm' to go back to loading screen",width /2, 390);
 
   }
   
@@ -399,6 +457,10 @@ function keyPressed(){
       option++; 
   
     }
+  }
+  //Go back to loading screen
+  if(key == 'm'){
+    option = 0; 
   }
   //WASD movements
   if(key == 'w'){
