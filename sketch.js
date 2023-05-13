@@ -94,7 +94,8 @@ function draw() {
     fill('#FFFFFF');
     textSize(16);
     text("Click to shoot at the other team!", width/2 + 15, 670);
-    text("Hold 'q' to catch balls from other team." , width/2 + 15, 690);
+    text("Hold 'k' to catch balls from other team." , width/2 + 15, 690);
+    text("Refresh page to restart.",width /2, 730);
 
     //Control info
     text("W", width / 2, height / 2 );
@@ -185,7 +186,7 @@ function draw() {
               let playerBall = players[i].attack(team[i].spr.position); 
               //If we can catch the ball and we do by hovering over it
               if(canCatch){
-                if(kb.pressing('q'))
+                if(kb.pressing('k'))
                   playerBall.ball.overlaps(mc.sprite, () => playerBall.ball.remove())
               }
               //Check if team can still be hit
@@ -208,7 +209,7 @@ function draw() {
             if(players[i].health > 0){
               let playerBall = players[i].attack(crush.spr.position);
               if(canCatch){
-                  if(kb.pressing('q'))
+                  if(kb.pressing('k'))
                   playerBall.ball.overlaps(mc.sprite, () => playerBall.ball.remove()); 
               }
               if(playerBall.ball.life > 0){
@@ -477,7 +478,7 @@ function keyPressed(){
   if(key == 'd'){
     goRight = true;
   }
-  if(key == 'q'){
+  if(key = 'k'){
     mc.sprite.collider = 'none'; 
     canCatch = true;
   }
@@ -502,7 +503,7 @@ function keyReleased(){
   if(key == 'd'){
     goRight = false;
   }
-  if(key == 'q'){
+  if(key = 'k'){
     mc.sprite.collider = 'static'; 
     canCatch = false; 
   }
