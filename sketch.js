@@ -28,7 +28,7 @@ let friendCount = 0; //Keeps track of how many friends got out
 let canCatch = false;
 
 //Options (Toggles between loading, main, and ending screen(s))
-let option = 2; 
+let option = 0; 
 let ending = 0;
 //Different options and endings
 /*
@@ -229,7 +229,6 @@ function draw() {
           for(let i = hitUs.length - 1; i >= 0; i--){
             hitUs[i].hit();
              //If the player that just died is us, GAME OVER
-             console.log(players, mc.health); 
             if((hitUs[i] instanceof Player) && (mc.health == 0)){
               option = 5; 
             }
@@ -319,7 +318,7 @@ function draw() {
   }
   //If you kill all the opponents
   if(option == 2){
-    background(0);
+    background('#caf0f8');
     for(let i = 0; i <= team.length - 1; i++){
       team[i].spr.visible = false;
     }
@@ -328,8 +327,13 @@ function draw() {
     }
     textFont(pixelFont, 42);
     textAlign(CENTER);
-    fill('#FFFFFF');
+    stroke('#FFFFFF');
+    fill('#9f86c0');
+    strokeWeight(3);
     text("You did it!",width /2, 300);
+    textSize(20);
+    noStroke();
+    text("Press 'm' to go back to loading screen",width /2, 350);
   }
   //MC Lives but teammates have died 
   if(option == 3){
